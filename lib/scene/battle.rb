@@ -6,7 +6,7 @@ module Scene
       @command_cursor = 0
       @gameover = false
       @player_x = 0
-      @course_width = 1000
+      @course_width = 1024
       @wait = 60
       @start_buffer = 128
       @goal_buffer = 64
@@ -15,7 +15,7 @@ module Scene
     def update
       if @wait > 0
         @wait -= 1
-      elsif @course_width >= @player_x
+      elsif @course_width > @player_x
         @player_x += 5
       end
     end
@@ -131,13 +131,8 @@ module Scene
       lane_y = @game.window_height / 3
       image = @game.image(:tree)
       y = lane_y - image.height
-      if @game.window_width < (@course_width - @player_x)
-        x = @player_x
-      else
-        x = @course_width - @game.window_width
-      end
-      ((@course_width - @start_buffer - @goal_buffer) / image.width).times do |i|
-        image.draw(image.width * i - x + @start_buffer,
+      (@course_width / image.width).times do |i|
+        image.draw(object_window_x(image.width * (i + 1)),
                    y,
                    ZOrder::PLAYER)
       end
@@ -146,20 +141,14 @@ module Scene
     def draw_line
       lane_y = @game.window_height / 3
       image = @game.image(:line)
-      x = @game.player.image.width * 2
       y = lane_y
+      start_x = image.width
+      goal_x = @course_width + image.width
       4.times do |i|
-        window_draw(x - @player_x,
+        window_draw(object_window_x(start_x),
                     y + image.height * i,
                     image)
-      end
-      if @game.window_width < (@course_width - @player_x)
-        x = @course_width - @player_x - @start_buffer - @goal_buffer - image.width
-      else
-        x = @course_width - @game.window_width + @game.player.image.width
-      end
-      4.times do |i|
-        window_draw(x + @start_buffer,
+        window_draw(object_window_x(goal_x),
                     y + image.height * i,
                     image)
       end
@@ -169,14 +158,26 @@ module Scene
       lane_y = @game.window_height / 3
       image = @game.player.image
       y = lane_y
-      if @game.window_width < (@course_width - @player_x)
-        x = image.width
-      elsif @course_width >= (@player_x + @start_buffer)
-        x = @game.window_width - (@course_width - @player_x) + image.width
+      window_draw(player_window_x(@player_x), y, image)
+    end
+
+    def object_window_x(x, player_x=nil)
+      player_x ||= @player_x
+      if @game.window_width <
+         (@course_width + @goal_buffer) - (player_x - @start_buffer)
+        (@game.window_width + player_x) - (x + @start_buffer)
       else
-        x = @game.window_width - image.width
+        @course_width - x + @goal_buffer
       end
-      window_draw(x, y, image)
+    end
+
+    def player_window_x(player_x)
+      if @game.window_width <
+         (@course_width + @goal_buffer) - (player_x - @start_buffer)
+        @game.window_width - @start_buffer
+      else
+        @course_width - player_x + @goal_buffer
+      end
     end
 
     def draw_distance
