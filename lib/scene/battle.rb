@@ -6,6 +6,7 @@ module Scene
       @command_cursor = 0
       @gameover = false
       @player_x = 0
+      @boss_x = 0
       @course_width = 1024
       @wait = 60
       @start_buffer = 192
@@ -15,8 +16,10 @@ module Scene
     def update
       if @wait > 0
         @wait -= 1
-      elsif @course_width > @player_x
+      elsif @course_width > @player_x &&
+            @course_width > @boss_x
         @player_x += 5
+        @boss_x += rand(11)
       end
     end
 
@@ -24,6 +27,7 @@ module Scene
       draw_background
       draw_line
       draw_player
+      draw_boss
       draw_status_window_frame
       draw_distance
       draw_talk_window_frame
@@ -159,6 +163,13 @@ module Scene
       image = @game.player.image
       y = lane_y
       window_draw(player_window_x(@player_x), y, image)
+    end
+
+    def draw_boss
+      image = @game.boss.image
+      lane_y = @game.window_height / 3 + image.height
+      y = lane_y
+      window_draw(object_window_x(@boss_x), y, image)
     end
 
     def object_window_x(x, player_x=nil)
