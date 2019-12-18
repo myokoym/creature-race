@@ -39,7 +39,7 @@ class Game < GameWindow
     @boss = Character.new(
       name: "あかずきん",
       lv: 1,
-      speed: 19,
+      speed: 16,
       stamina: 30,
       image: @images[:akazukin]
     )

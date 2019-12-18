@@ -33,11 +33,11 @@ module Scene
           @stamina_counter = 10
         end
         if @game.player.stamina > 0
-          @player_x += 5
+          @player_x += @game.player.speed / 4
         else
-          @player_x += 2
+          @player_x += @game.player.speed / 10
         end
-        @boss_x += 4
+        @boss_x += @game.boss.speed / 4
       else
         if @player_x < @boss_x
           @comments << [
