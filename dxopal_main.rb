@@ -12,6 +12,9 @@ class GameWindow
     super
   end
 
+  def draw
+  end
+
   def window_width
     Window.width
   end
@@ -28,7 +31,9 @@ end
 
 Image.register(:akazukin, "images/akazukin.png")
 Image.register(:butasan, "images/butasan.png")
-Image.register(:font, "font/misaki_gothic_invert_x2.png")
+Image.register(:tree, "images/tree.png")
+Image.register(:line, "images/line.png")
+Image.register(:font, "font/misaki_gothic_x2.png")
 
 class Game
   def window_button_down
@@ -48,9 +53,9 @@ class Game
       id = :k_right
     end
     if mouse_push?(:m_lbutton)
-      if mouse_y < @game.window_height / 3
+      if mouse_y < self.window_height / 3
         id = :k_up
-      elsif mouse_y > @game.window_height / 3 * 2
+      elsif mouse_y > self.window_height / 3 * 2
         id = :k_down
       else
         id = :k_space
@@ -110,10 +115,12 @@ class Game
 end
 
 Window.load_resources do
-  Window.bgcolor = [0, 0 , 0]
+  Window.bgcolor = [255, 255, 255]
   game = Game.new({
     akazukin: Image[:akazukin],
     butasan: Image[:butasan],
+    tree: Image[:tree],
+    line: Image[:line],
     font: Image[:font].slice_tiles(94, 8),
   })
   Window.loop do
