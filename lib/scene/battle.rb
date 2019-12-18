@@ -33,19 +33,7 @@ module Scene
         @player_x += @game.player.real_speed
         @boss_x += @game.boss.real_speed
       else
-        if @player_x < @boss_x
-          @comments << [
-            "まけてしまった",
-            "",
-            "",
-          ]
-        else
-          @comments << [
-            "#{@game.player.name} のかち",
-            "",
-            "",
-          ]
-        end
+        process_gameover
       end
     end
 
@@ -71,58 +59,14 @@ module Scene
         if @comments.empty?
           case @command_cursor
           when 0
-            damage = 5
-            @game.boss.damage(damage)
-            @comments << [
-              "#{@game.player.name} のこうげき",
-              "#{@game.boss.name} にあたった",
-              "",
-            ]
-            @comments << [
-              "#{@game.boss.name} のはんげき",
-              "#{@game.player.name} にあたった",
-              "",
-              0,
-              10,
-            ]
           when 1
-            damage = 2
-            @game.player.damage(damage)
-            @comments << [
-              "#{@game.boss.name} のこうげき",
-              "#{@game.player.name} はひっしによけた",
-              "",
-            ]
             check_gameover
           when 2
-            @comments << [
-              "#{@game.player.name} はにげだした",
-              "しかし まわりこまれてしまった",
-              "",
-            ]
-            @comments << [
-              "#{@game.boss.name} のこうげき",
-              "#{@game.player.name} にあたった",
-              "",
-              0,
-              5,
-            ]
           end
         else
           @comments.shift
           if @gameover && @comments.empty?
-            if @game.player.hp > 0
-              @game.set_scene(:gameclear)
-            else
-              @game.set_scene(:gameover)
-            end
-          end
-          if @comments[0] && !@gameover
-            @game.boss.damage(@comments[0][3]) if @comments[0][3]
-            if @comments[0][4]
-              @game.player.damage(@comments[0][4])
-              check_gameover
-            end
+            @game.set_scene(:gameover)
           end
         end
       when :k_up
@@ -134,26 +78,21 @@ module Scene
       end
     end
 
-    def check_gameover
-      if @game.player.hp == 0
+    def process_gameover
+      return if @gameover
+      @gameover = true
+      if @course_width <= @player_x
+        @comments << [
+          "#{@game.player.name} のかち",
+          "",
+          "",
+        ]
+      elsif @course_width <= @boss_x
         @comments << [
           "#{@game.player.name} はまけてしまった",
           "",
           "",
         ]
-        @gameover = true
-      elsif @game.player.hp == 1
-        @comments << [
-          "はぁ つかれちゃった",
-          "",
-          "",
-        ]
-        @comments << [
-          "かえろ",
-          "",
-          "",
-        ]
-        @gameover = true
       end
     end
 
