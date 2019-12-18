@@ -1,6 +1,6 @@
 class Game < GameWindow
   attr_reader :player, :boss
-  def initialize(images)
+  def initialize(images={})
     super
     @images = images
     init_game
