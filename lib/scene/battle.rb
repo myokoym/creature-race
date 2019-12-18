@@ -8,7 +8,7 @@ module Scene
       @player_x = 0
       @course_width = 1024
       @wait = 60
-      @start_buffer = 128
+      @start_buffer = 192
       @goal_buffer = 64
     end
 
