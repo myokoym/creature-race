@@ -7,10 +7,11 @@ module Scene
       @gameover = false
       @player_x = 0
       @boss_x = 0
-      @course_width = 1024
+      @course_width = 2048
       @wait = 60
       @start_buffer = 192
       @goal_buffer = 64
+      @stamina_counter = 10
     end
 
     def update
@@ -18,8 +19,31 @@ module Scene
         @wait -= 1
       elsif @course_width > @player_x &&
             @course_width > @boss_x
-        @player_x += 5
-        @boss_x += rand(11)
+        @stamina_counter -= 1
+        if @stamina_counter < 0
+          @game.player.damage(1)
+          @stamina_counter = 10
+        end
+        if @game.player.stamina > 0
+          @player_x += 5
+        else
+          @player_x += 2
+        end
+        @boss_x += 4
+      else
+        if @player_x < @boss_x
+          @comments << [
+            "まけてしまった",
+            "",
+            "",
+          ]
+        else
+          @comments << [
+            "#{@game.player.name} のかち",
+            "",
+            "",
+          ]
+        end
       end
     end
 

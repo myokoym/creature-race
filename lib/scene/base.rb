@@ -39,9 +39,9 @@ module Scene
 
       draw_kana(40, 0, @game.player.name)
       draw_kana(16, 32, "はやさ")
-      draw_num(16 * 5, 32, @game.player.lv, 3)
+      draw_num(16 * 5, 32, @game.player.speed, 3)
       draw_kana(16, 64, "げんき")
-      draw_num(16 * 5, 64, @game.player.hp, 3)
+      draw_num(16 * 5, 64, @game.player.stamina, 3)
     end
 
     def draw_talk_window_frame

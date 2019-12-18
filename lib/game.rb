@@ -29,8 +29,20 @@ class Game < GameWindow
   end
 
   def init_status
-    @player = Character.new("ぶたさん", 20, @images[:butasan])
-    @boss = Character.new("あかずきん", 10, @images[:akazukin])
+    @player = Character.new(
+      name: "ぶたさん",
+      lv: 1,
+      speed: 20,
+      stamina: 20,
+      image: @images[:butasan]
+    )
+    @boss = Character.new(
+      name: "あかずきん",
+      lv: 1,
+      speed: 19,
+      stamina: 30,
+      image: @images[:akazukin]
+    )
   end
 
   def init_scenes

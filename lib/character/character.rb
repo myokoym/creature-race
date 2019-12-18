@@ -2,25 +2,24 @@ class Character
   attr_reader :name
   attr_reader :image
   attr_reader :lv
-  attr_reader :hp
-  def initialize(name, lv, image)
+  attr_reader :speed
+  attr_reader :stamina
+  attr_reader :stamina_max
+  def initialize(name:, lv:, speed:, stamina:, image:)
     @name = name
     @lv = lv
-    @hp = @lv
+    @speed = speed
+    @stamina = stamina
+    @stamina_max = stamina_max
     @image = image
   end
 
   def lv_up
     @lv += 1
-    hp_max
-  end
-
-  def hp_max
-    @hp = @lv
   end
 
   def damage(pow)
-    @hp -= pow
-    @hp = 0 if @hp < 0
+    @stamina -= pow
+    @stamina = 0 if @stamina < 0
   end
 end
