@@ -9,7 +9,7 @@ class GameWindow < Gosu::Window
 
   def initialize(images)
     super(640, 480)
-    self.caption = "Butasan Quest"
+    self.caption = "Creature Race"
     @background_image = Gosu::Image.new("images/white.png")
   end
 
