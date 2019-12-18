@@ -12,6 +12,11 @@ module Scene
       @start_buffer = 192
       @goal_buffer = 64
       @stamina_counter = 10
+      @comments << [
+        "はじめっ",
+        "",
+        "",
+      ]
     end
 
     def update
@@ -19,6 +24,9 @@ module Scene
         @wait -= 1
       elsif @course_width > @player_x &&
             @course_width > @boss_x
+        unless @comments.empty?
+          @comments.shift
+        end
         @stamina_counter -= 1
         if @stamina_counter < 0
           @game.player.damage(1)
