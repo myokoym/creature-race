@@ -40,7 +40,7 @@ class Game < GameWindow
       name: "あかずきん",
       lv: 1,
       speed: 16,
-      stamina: 30,
+      stamina: 40,
       image: @images[:akazukin]
     )
   end

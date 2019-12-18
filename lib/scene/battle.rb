@@ -11,7 +11,8 @@ module Scene
       @wait = 60
       @start_buffer = 192
       @goal_buffer = 64
-      @stamina_counter = 10
+      @game.player.reset
+      @game.boss.reset
       @comments << [
         "はじめっ",
         "",
@@ -27,17 +28,10 @@ module Scene
         unless @comments.empty?
           @comments.shift
         end
-        @stamina_counter -= 1
-        if @stamina_counter < 0
-          @game.player.damage(1)
-          @stamina_counter = 10
-        end
-        if @game.player.stamina > 0
-          @player_x += @game.player.speed / 4
-        else
-          @player_x += @game.player.speed / 10
-        end
-        @boss_x += @game.boss.speed / 4
+        @game.player.damage!
+        @game.boss.damage!
+        @player_x += @game.player.real_speed
+        @boss_x += @game.boss.real_speed
       else
         if @player_x < @boss_x
           @comments << [
