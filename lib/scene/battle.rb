@@ -22,7 +22,7 @@ module Scene
 
     def update
       if @wait > 0
-        @wait -= 1
+        #@wait -= 1
       elsif @course.length > @player_x &&
             @course.length > @boss_x
         unless @comments.empty?
@@ -56,6 +56,7 @@ module Scene
     def button_down(id)
       case id
       when :k_space
+        @wait -= 100
         if @comments.empty?
           case @command_cursor
           when 0
