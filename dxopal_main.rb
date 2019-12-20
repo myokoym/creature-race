@@ -1,6 +1,10 @@
 require "dxopal"
 include DXOpal
 
+base_dir = File.expand_path(File.join(File.dirname(__FILE__), ".."))
+$LOAD_PATH.unshift(File.join(base_dir, "data"))
+$LOAD_PATH.unshift(File.join(base_dir, "lib"))
+
 class GameWindow
   class << self
     def draw(x, y, image)

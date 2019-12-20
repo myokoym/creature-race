@@ -1,6 +1,7 @@
 class Files
   LIST = [
     "game",
+    "course",
     "character/character",
     "scene/base",
     "scene/title",

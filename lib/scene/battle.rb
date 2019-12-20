@@ -7,7 +7,7 @@ module Scene
       @gameover = false
       @player_x = 0
       @boss_x = 0
-      @course_width = 2048
+      @course = @game.course(2)
       @wait = 60
       @start_buffer = 192
       @goal_buffer = 64
@@ -23,8 +23,8 @@ module Scene
     def update
       if @wait > 0
         @wait -= 1
-      elsif @course_width > @player_x &&
-            @course_width > @boss_x
+      elsif @course.length > @player_x &&
+            @course.length > @boss_x
         unless @comments.empty?
           @comments.shift
         end
@@ -81,13 +81,13 @@ module Scene
     def process_gameover
       return if @gameover
       @gameover = true
-      if @course_width <= @player_x
+      if @course.length <= @player_x
         @comments << [
           "#{@game.player.name} のかち",
           "",
           "",
         ]
-      elsif @course_width <= @boss_x
+      elsif @course.length <= @boss_x
         @comments << [
           "#{@game.player.name} はまけてしまった",
           "",
@@ -100,7 +100,7 @@ module Scene
       lane_y = @game.window_height / 3
       image = @game.image(:tree)
       y = lane_y - image.height
-      (@course_width / image.width).times do |i|
+      (@course.length / image.width).times do |i|
         image.draw(object_window_x(image.width * (i + 1)),
                    y,
                    ZOrder::PLAYER)
@@ -112,7 +112,7 @@ module Scene
       image = @game.image(:line)
       y = lane_y
       start_x = image.width
-      goal_x = @course_width + image.width
+      goal_x = @course.length + image.width
       4.times do |i|
         window_draw(object_window_x(start_x),
                     y + image.height * i,
@@ -140,24 +140,24 @@ module Scene
     def object_window_x(x, player_x=nil)
       player_x ||= @player_x
       if @game.window_width <
-         (@course_width + @goal_buffer) - (player_x - @start_buffer)
+         (@course.length + @goal_buffer) - (player_x - @start_buffer)
         (@game.window_width + player_x) - (x + @start_buffer)
       else
-        @course_width - x + @goal_buffer
+        @course.length - x + @goal_buffer
       end
     end
 
     def player_window_x(player_x)
       if @game.window_width <
-         (@course_width + @goal_buffer) - (player_x - @start_buffer)
+         (@course.length + @goal_buffer) - (player_x - @start_buffer)
         @game.window_width - @start_buffer
       else
-        @course_width - player_x + @goal_buffer
+        @course.length - player_x + @goal_buffer
       end
     end
 
     def draw_distance
-      draw_num(@game.window_width - 100, 0, @course_width - @player_x)
+      draw_num(@game.window_width - 100, 0, @course.length - @player_x)
     end
 
     def draw_command_window_frame

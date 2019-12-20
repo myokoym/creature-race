@@ -1,3 +1,5 @@
+require "json"
+
 class Game < GameWindow
   attr_reader :player, :boss
   def initialize(images={})
@@ -24,6 +26,7 @@ class Game < GameWindow
   end
 
   def init_game
+    load_courses
     init_status
     init_scenes
   end
@@ -64,11 +67,20 @@ class Game < GameWindow
     @current_scene = @scenes[:battle]
   end
 
+  def load_courses
+    @courses = JSON.load(File.read("data/course.json"))
+  end
+
   def register_image(symbol, image)
     @images[symbol] = image
   end
 
   def image(symbol)
     @images[symbol]
+  end
+
+  def course(id)
+    course = @courses[id.to_s]
+    Course.new(course["length"])
   end
 end
