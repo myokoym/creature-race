@@ -6,7 +6,7 @@ GEM
       thor (~> 0.19.1)
     gosu (0.14.5)
     power_assert (1.1.5)
-    rack (2.0.7)
+    rack (2.2.3)
     rr (1.2.1)
     test-unit (3.3.4)
       power_assert
